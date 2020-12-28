@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>My AngularJS App</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://gitcdn.xyz/cdn/angular/bower-material/master/angular-material.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="/assets/css/md-data-table.min.css">
+    <link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body>
+
+<div ng-controller="AppCtrl" layout="column" style="height:100%;" ng-cloak>
+
+    <md-toolbar layout="row" class="md-toolbar-tools">
+        <span ng-click="toggleLeft()" class="material-icons" style="margin-right:10px;cursor:pointer;">
+            menu
+        </span>
+        <h2>Gestão de cursos de capacitação</h2>
+    </md-toolbar>
+
+    <md-content layout="row" flex>
+
+        <md-sidenav
+                layout="column"
+                class="md-sidenav-left"
+                md-component-id="left"
+                md-is-locked-open="$mdMedia('gt-sm')"
+                md-whiteframe="3">
+
+            <md-list>
+
+                <md-list-item>
+
+                    <md-button href="#!/funcionario">
+                        Funcionários
+                    </md-button>
+
+                </md-list-item>
+
+                <md-list-item>
+
+                    <md-button href="#!/curso">
+                        Cursos
+                    </md-button>
+
+                </md-list-item>
+
+            </md-list>
+
+        </md-sidenav>
+
+        <md-content flex layout-padding ng-view>
+        </md-content>
+
+    </md-content>
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-aria.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-messages.js"></script>
+<script src="https://gitcdn.xyz/cdn/angular/bower-material/master/angular-material.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.69/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.69/vfs_fonts.min.js"></script>
+<script src="/assets/js/angular-locale_pt-br.js"></script>
+<script src="/assets/js/md-data-table.min.js"></script>
+<script src="/assets/js/app.js"></script>
+<script src="funcionario/funcionario.js"></script>
+<script src="curso/curso.js"></script>
+<script src="/assets/js/utils.js"></script>
+
+</body>
+</html>

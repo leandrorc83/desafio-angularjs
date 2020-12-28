@@ -1,0 +1,47 @@
+<h2>{{acao}} curso</h2>
+
+<form name="cursoForm" novalidate ng-submit="salvar()">
+
+    <input name="id" type="hidden" ng-model="curso.id" />
+
+    <md-input-container class="md-block">
+        <label>Título</label>
+        <input name="titulo" md-maxlength="100" ng-model="curso.titulo" required />
+        <div ng-messages="cursoForm.titulo.$error" role="alert">
+            <div ng-message="required">Campo obrigatório.</div>
+            <div ng-message="md-maxlength">O título deve conter no máximo 100 caracteres.</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="md-block">
+        <label>Descrição</label>
+        <input name="descricao" ng-model="curso.descricao" required />
+
+        <div ng-messages="cursoForm.descricao.$error" role="alert">
+            <div ng-message="required">Campo obrigatório.</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="md-block">
+        <label>Carga horária</label>
+        <input name="carga_horaria" type="number" ng-model="curso.carga_horaria" required />
+
+        <div ng-messages="cursoForm.carga_horaria.$error" role="alert">
+            <div ng-message="required">Campo obrigatório.</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="md-block">
+        <label>Valor</label>
+        <input name="dt_admissao" type="number" ng-model="curso.valor" required />
+
+        <div ng-messages="cursoForm.valor.$error" role="alert">
+            <div ng-message="required">Campo obrigatório.</div>
+        </div>
+    </md-input-container>
+
+    <div>
+        <md-button class="md-raised" type="submit">Salvar</md-button>
+    </div>
+
+</form>

@@ -1,0 +1,51 @@
+<h2>{{acao}} funcionário</h2>
+
+<form name="funcionarioForm" novalidate ng-submit="salvar()">
+
+    <input name="id" type="hidden" ng-model="funcionario.id" />
+
+    <md-input-container class="md-block">
+        <label>Nome</label>
+        <input name="nome" md-maxlength="100" ng-model="funcionario.nome" required />
+        <div ng-messages="funcionarioForm.nome.$error" role="alert">
+            <div ng-message="required">Campo obrigatório.</div>
+            <div ng-message="md-maxlength">O nome deve conter no máximo 100 caracteres.</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="md-block">
+        <label>Telefone</label>
+        <input name="telefone" ng-model="funcionario.telefone" ng-pattern="/^[0-9]{10,11}$/" required />
+
+        <div class="hint">ddd + número (apenas dígitos)</div>
+
+        <div ng-messages="funcionarioForm.telefone.$error" role="alert">
+            <div ng-message="required">Campo obrigatório.</div>
+            <div ng-message="pattern">Por favor, digite um telefone válido.</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="md-block">
+        <label>Endereço</label>
+        <input name="endereco" md-maxlength="100" ng-model="funcionario.endereco" required />
+
+        <div ng-messages="funcionarioForm.endereco.$error" role="alert">
+            <div ng-message="required">Campo obrigatório.</div>
+            <div ng-message="md-maxlength">O endereço deve conter no máximo 100 caracteres.</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="md-block">
+        <label>Data de admissão</label>
+        <input name="dt_admissao" ng-model="funcionario.dt_admissao" type="date" required />
+
+        <div ng-messages="funcionarioForm.dt_admissao.$error" role="alert">
+            <div ng-message="required">Campo obrigatório.</div>
+        </div>
+    </md-input-container>
+
+    <div>
+        <md-button class="md-raised" type="submit">Salvar</md-button>
+    </div>
+
+</form>
