@@ -1,6 +1,6 @@
-# Desafio-php
+# Desafio-angularjs
 
-Este repositório contém um aplicativo CRUD básico de funcionários e seus dependentes.
+Este repositório contém um aplicativo CRUD de funcionários e cursos de capacitação.
 
 Tecnologias utilizadas:
 - PHP 7.2
@@ -15,7 +15,7 @@ https://docs.docker.com/v17.12/install/
 2 - Clone este repositório em um diretório:
 git clone https://github.com/leandrorc83/desafio-angularjs.git
 
-3 - Entre na pasta desafio-php
+3 - Entre na pasta desafio-angularjs
 
 4 - Execute o seguinte comando:
 sudo docker-compose up
