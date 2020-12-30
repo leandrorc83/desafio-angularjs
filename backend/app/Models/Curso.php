@@ -106,7 +106,66 @@ class Curso extends Model
             $cursoFuncionario->save();
         }
         else{
-            $retorno->erro = 'Funcionário já relacionado a este curso.';
+            $retorno->erro = 'Funcionário já inscrito nesse curso.';
+        }
+
+        return json_encode($retorno);
+
+    }
+
+    /**
+     * Remove aluno de curso.
+     * @param $dados
+     * @return false|string
+     */
+    public function removerAluno($dados)
+    {
+
+        $retorno = new \stdClass();
+
+        $cursoFuncionario = CursoFuncionario::firstOrNew($dados);
+
+        $cursoFuncionario->delete();
+
+        return json_encode($retorno);
+
+    }
+
+    /**
+     * Processa exclusão do curso.
+     * @param $id
+     * @return false|string
+     * @throws \Exception
+     */
+    public function excluir($id)
+    {
+
+        $retorno = new \stdClass();
+
+        try {
+
+            \DB::beginTransaction();
+
+            //return response()->json($id);
+            $curso = Curso::find($id);
+
+            if ($curso) {
+                $curso->alunos()->detach();
+                $curso->delete();
+            }
+
+            \DB::commit();
+
+        }
+        catch(\ErrorException $e)
+        {
+            \DB::rollback();
+            $retorno->erro = $e->getMessage();
+        }
+        catch(\Exception $e)
+        {
+            \DB::rollback();
+            throw $e;
         }
 
         return json_encode($retorno);

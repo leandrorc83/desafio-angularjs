@@ -22,4 +22,3 @@ sudo docker-compose up
 
 5 - Quando finalizar o comando acima, acesse a url localhost:4300 em seu navegador
 
-Obs: todas as dependências são instaladas automaticamente.

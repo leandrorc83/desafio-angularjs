@@ -15,12 +15,13 @@ $router->get('/api/funcionario/listar/', 'FuncionarioController@listar');
 $router->post('/api/funcionario/pesquisar', 'FuncionarioController@pesquisar');
 $router->get('/api/funcionario/{id}', 'FuncionarioController@get');
 $router->post('/api/funcionario/salvar', 'FuncionarioController@salvar');
-$router->delete('/api/funcionario/delete/{id}', 'FuncionarioController@delete');
+$router->delete('/api/funcionario/{id}', 'FuncionarioController@excluir');
 
 $router->get('/api/curso/listar/', 'CursoController@listar');
 $router->get('/api/curso/get-cursos-com-alunos', 'CursoController@getCursosComAlunos');
 $router->get('/api/curso/{id}', 'CursoController@get');
 $router->post('/api/curso/salvar', 'CursoController@salvar');
-$router->delete('/api/curso/delete/{id}', 'CursoController@delete');
+$router->delete('/api/curso/{id}', 'CursoController@excluir');
 $router->post('/api/curso/get-alunos/{id}', 'CursoController@getAlunos');
 $router->post('/api/curso/relacionar-aluno', 'CursoController@relacionarAluno');
+$router->delete('/api/curso/remover-aluno/{id}', 'CursoController@removerAluno');

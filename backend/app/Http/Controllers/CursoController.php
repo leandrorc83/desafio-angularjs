@@ -68,7 +68,6 @@ class CursoController extends Controller
     public function getAlunos($id)
     {
 
-        sleep(3);
         return Curso::find($id)->alunos()->orderBy('nome')->get();
 
     }
@@ -86,12 +85,36 @@ class CursoController extends Controller
     }
 
     /**
+     * Relacionar aluno a um curso.
+     * @param Request $request
+     */
+    public function removerAluno(Request $request)
+    {
+
+        $curso = new Curso();
+        return $curso->removerAluno($request->all());
+
+    }
+
+    /**
      * Retorna lista de cursos e seus alunos.
      * @return Curso[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getCursosComAlunos(){
 
         return Curso::with('alunos')->get();
+
+    }
+
+    /**
+     * Exclui um curso
+     * @param $request
+     */
+    public function excluir(Request $request)
+    {
+
+        $curso = new Curso();
+        return $curso->excluir($request->id);
 
     }
 

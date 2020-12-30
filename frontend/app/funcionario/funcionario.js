@@ -30,7 +30,7 @@ angular.module('myApp.funcionario', [])
 
     })
 
-    .controller('funcionarioListaCtrl', function ($scope, $http) {
+    .controller('funcionarioListaCtrl', function ($scope, $http, $mdDialog) {
 
         $scope.funcionarios = [];
 
@@ -62,16 +62,72 @@ angular.module('myApp.funcionario', [])
                 }
             );
 
-        }();
+        };
+
+        $scope.listar();
+
+        /**
+         * Confirma exclusão do funcionário.
+         * @param ev
+         */
+        $scope.confirmarExcluir = function(ev, id) {
+
+            var confirm = $mdDialog.confirm()
+                .title('Confirma exclusão?')
+                .textContent('O funcionário será removido de todos os cursos nos quais estiver inscrito!')
+                .ariaLabel('Confirma exclusão?')
+                .targetEvent(ev)
+                .ok('Continuar')
+                .cancel('Cancelar');
+
+            $mdDialog.show(confirm).then(function () {
+                $scope.excluir(id);
+            },function(){});
+
+        }
+
+        /**
+         * Processa exclusão do funcionário.
+         * @param id
+         */
+        $scope.excluir = function (id) {
+
+            $http.delete($scope.apiHost + 'funcionario/' + id).then(
+                function (response) {
+                    if (response.data.erro != undefined) {
+                        $scope.alertDialog('erro', 'Erro', response.data.erro);
+                    }
+                    else {
+                        $scope.alertDialog('sucesso', 'Sucesso', 'Funcionário excluído!');
+                        $scope.listar();
+                    }
+                },
+                function (response) {
+                    $scope.alertDialog('erro', 'Erro', 'Erro no servidor!');
+                }
+            );
+
+        }
 
     })
 
-    .controller('funcionarioFormCtrl', function ($scope, $http, $stateParams) {
+    .controller('funcionarioFormCtrl', function ($scope, $http, $state, $stateParams) {
 
-        $scope.funcionario = {id: '', nome: '', telefone: '', endereco: '', dt_admissao: ''};
+        $scope.acao = $stateParams.id != undefined ? 'Editar' : 'Cadastrar';
 
-        $scope.acao = $stateParams.id != undefined ? 'Visualizar/Editar' : 'Cadastrar';
+        /**
+         * Inicializa model de funcionário.
+         */
+        $scope.initFuncionario = function(){
+            return {id: '', nome: '', telefone: '', endereco: '', dt_admissao: ''};
+        }
 
+        $scope.funcionario = $scope.initFuncionario();
+
+        /**
+         * Recupera um funcionário.
+         * @param id
+         */
         $scope.getFuncionario = function(id){
 
             $http.get($scope.apiHost + 'funcionario/' + id, $scope.query).then(
@@ -101,7 +157,13 @@ angular.module('myApp.funcionario', [])
 
             //console.log($scope.funcionario, $scope.funcionarioForm);
 
-            $scope.salvarDados('funcionario/salvar', $scope.funcionarioForm.$valid, $scope.funcionario);
+            $scope.salvarDados('funcionario/salvar', $scope.funcionarioForm.$valid, $scope.funcionario,
+                function(){
+                    if($scope.acao == 'Cadastrar') {
+                        $state.reload();
+                    }
+                }
+            );
 
         }
 

@@ -1,7 +1,9 @@
+<span ui-sref="home" class="pointer">< Home</span>
+
 <h2>Lista de cursos</h2>
 
-<md-button ui-sref="curso-cadastrar">Cadastrar curso</md-button> |
-<md-button ng-click="getCursosComAlunos()">Gerar pdf</md-button>
+<md-button class="md-primary" ui-sref="curso-cadastrar">Cadastrar curso</md-button> |
+<md-button class="md-primary" ng-click="getCursosComAlunos()">Gerar pdf</md-button>
 
 <md-table-container>
 	<table md-table md-progress="true">
@@ -21,19 +23,26 @@
 			<td md-cell>{{curso.carga_horaria}}</td>
 			<td md-cell style="white-space: nowrap;">{{curso.valor | currency}}</td>
 			<td md-cell style="white-space: nowrap;">
-				<a ui-sref="curso-editar({id: '{{curso.id}}'})" style="color:inherit;">
+				<span ui-sref="curso-editar({id: '{{curso.id}}'})" class="pointer">
 					<md-tooltip md-direction="top">
-						Ver/editar
+						Editar
 					</md-tooltip>
-					<span class="material-icons">edit</span>
-				</a>
+					<span class="material-icons brown">edit</span>
+				</span>
 
-				<span ng-click="abrirRelacaoAlunos($event, curso)" style="color:inherit;cursor:pointer;">
+				<span ng-click="abrirRelacaoAlunos($event, curso)" class="pointer">
                     <md-tooltip md-direction="top">
                         Ver/gerenciar alunos
                     </md-tooltip>
-                    <span class="material-icons">people</span>
+                    <span class="material-icons blue">people</span>
                 </span>
+
+				<a ng-click="confirmarExcluir($event, curso.id)" class="pointer" style="color:inherit;color:red;">
+					<md-tooltip md-direction="top">
+						Excluir
+					</md-tooltip>
+					<span class="material-icons red bold">close</span>
+				</a>
 			</td>
 		</tr>
 		</tbody>
@@ -44,15 +53,15 @@
                      md-total="{{cursos.length}}" md-on-paginate="listar" md-page-select></md-table-pagination>
 
 
-<div style="visibility: hidden">
-	<div class="md-dialog-container" id="alunosCurso" layout-margin>
+<div style="display: none">
+	<div class="md-dialog-container" id="alunosCurso">
 		<md-dialog flex="80" aria-label="Relação de alunos">
 			<md-toolbar>
 				<div class="md-toolbar-tools">
 					<h2>Relação de alunos</h2>
 					<span flex></span>
 					<md-button class="md-icon-button" ng-click="fecharRelacaoAlunos()">
-						<span class="material-icons" style="font-weight:bold;">
+						<span class="material-icons" class="bold">
                             close
                         </span>
 					</md-button>
@@ -96,7 +105,7 @@
 
 						<div>
 							<md-button class="md-raised" ng-click="relacionarFuncionarioCurso()" style="margin-left:0;">
-								Relacionar
+								Inscrever no curso
 							</md-button>
 						</div>
 
@@ -111,18 +120,26 @@
 					</p>
 
                     <p ng-show="alunosCursoSelecionado.length == 0 && !carregandoAlunos">
-                        Nenhum aluno relacionado.
+                        Nenhum aluno inscrito.
                     </p>
 
-                    <ul ng-show="alunosCursoSelecionado.length > 0 && !carregandoAlunos" style="list-style-type:none;padding-left:0;">
-                        <li ng-repeat="aluno in alunosCursoSelecionado">
-                            {{aluno.nome}}
-                        </li>
-                    </ul>
+                    <table ng-show="alunosCursoSelecionado.length > 0 && !carregandoAlunos" style="list-style-type:none;padding-left:0;">
+                        <tr ng-repeat="aluno in alunosCursoSelecionado">
+	                        <td>{{aluno.nome}}</td>
+	                        <td>
+		                        <a ng-click="confirmarRemover($event, funcionario.id)" class="pointer" style="color:inherit;">
+			                        <md-tooltip md-direction="top">
+				                        Remover do curso
+			                        </md-tooltip>
+			                        <span class="material-icons red bold">close</span>
+		                        </a>
+	                        </td>
+                        </tr>
+                    </table>
 
 				</div>
 
-            <md-dialog-content>
+            </md-dialog-content>
 
 		</md-dialog>
 	</div>

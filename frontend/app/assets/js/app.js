@@ -5,7 +5,9 @@ angular.module('myApp', [
     'ui.router',
     'ngMessages',
     'ngMaterial',
+    'ngStorage',
     'md.data.table',
+    'myApp.home',
     'myApp.funcionario',
     'myApp.curso',
 ]).config(function ($stateProvider, $urlRouterProvider) {
@@ -16,8 +18,9 @@ angular.module('myApp', [
 
     $stateProvider
         .state ('home',{
-            url:'/home',
-            templateUrl:'home.html'
+            url:'/',
+            templateUrl:'/home/home.html',
+            controller:'homeCtrl'
         });
 
 }).controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $mdDialog, $http) {
@@ -101,7 +104,7 @@ angular.module('myApp', [
 
     }
 
-    $scope.salvarDados = function(url, formValido, objDados){
+    $scope.salvarDados = function(url, formValido, objDados, fnAposSalvar){
 
         if (!formValido) {
             $scope.alertDialogForm();
@@ -112,6 +115,7 @@ angular.module('myApp', [
                         $scope.alertDialog('erro', 'Erro', response.data.erro);
                     } else {
                         $scope.alertDialog('sucesso', 'Sucesso', 'Dados salvos com sucesso!');
+                        fnAposSalvar();
                     }
                 },
                 function (response) {

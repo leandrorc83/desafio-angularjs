@@ -1,6 +1,8 @@
+<span ui-sref="home" class="pointer">< Home</span>
+
 <h2>Lista de funcionários</h2>
 
-<a ui-sref="funcionario-cadastrar">Cadastrar funcionário</a>
+<md-button class="md-primary" ui-sref="funcionario-cadastrar" layout-wrap>Cadastrar funcionário</md-button>
 
 <md-table-container>
     <table md-table md-progress="true">
@@ -21,7 +23,16 @@
                 <td md-cell>{{funcionario.dt_admissao | date:'dd/MM/yyyy'}}</td>
                 <td md-cell>
                     <a ui-sref="funcionario-editar({id: '{{funcionario.id}}'})" style="color:inherit;">
-                        <span class="material-icons">edit</span>
+                        <md-tooltip md-direction="top">
+                            Editar
+                        </md-tooltip>
+                        <span class="material-icons brown">edit</span>
+                    </a>
+                    <a ng-click="confirmarExcluir($event, funcionario.id)" class="pointer" style="color:inherit;">
+                        <md-tooltip md-direction="top">
+                            Excluir
+                        </md-tooltip>
+                        <span class="material-icons red bold">close</span>
                     </a>
                 </td>
             </tr>

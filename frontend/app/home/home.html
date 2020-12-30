@@ -1,1 +1,8 @@
-Seja bem-vinda(o)!
+<div class="fraseDoDia">
+	<span ng-show="fraseDoDia != ''">
+		<p>"{{fraseDoDia.text}}"</p><p>~{{fraseDoDia.author == '' ? 'Unknow' : fraseDoDia.author}}
+	</span>
+	<span ng-show="fraseDoDia === false">
+		Seja bem-vinda(o)!
+	</span>
+</div>

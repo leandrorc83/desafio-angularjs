@@ -146,6 +146,36 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: .5rem;
 }
 
+.fraseDoDia {
+  padding:1.5rem;
+  text-align:center;
+  font-size:1.2rem;
+}
+
+.bold{
+  font-weight: bold;
+}
+
+.pointer{
+  cursor:pointer;
+}
+
+.brown{
+  color:saddlebrown;
+}
+
+.blue{
+  color:darkblue;
+}
+
+.red{
+  color:red;
+}
+
+.md-sidenav-left{
+  width:20%;
+  background-color: #eeeeee;
+}
 
 /**
  Estilos para a md-dialog para mais de um objeto ao mesmo tempo.

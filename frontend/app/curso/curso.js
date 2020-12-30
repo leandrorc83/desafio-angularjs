@@ -47,6 +47,8 @@ angular.module('myApp.curso', [])
 
         $scope.carregandoAlunos = true;
 
+        $scope.cursosPdf = [];
+
         //$scope.promise = null;
 
         /**
@@ -67,7 +69,9 @@ angular.module('myApp.curso', [])
                 }
             );
 
-        }();
+        };
+
+        $scope.listar();
 
         /**
          * Abre modal com a relação de alunos do curso selecionado.
@@ -153,6 +157,8 @@ angular.module('myApp.curso', [])
 
         /**
          * Pesquisa funcionário cujo nome contenha o informado no campo "Funcionário" da janela "Relação de alunos".
+         * @param query
+         * @returns {PromiseLike<[] | *[]>|Promise<[] | *[]>|*[]}
          */
         function pesquisarFuncionario (query) {
 
@@ -185,6 +191,10 @@ angular.module('myApp.curso', [])
 
         }
 
+        /**
+         * Processa seleção no autocomplete.
+         * @param item
+         */
         function selectedItemChange(item) {
 
             if(item != undefined) {
@@ -204,7 +214,7 @@ angular.module('myApp.curso', [])
                         $scope.alertDialog('erro', 'Erro', response.data.erro);
                     }
                     else{
-                        $scope.alertDialog('sucesso', 'Sucesso', 'Funcionário relacionado com sucesso!');
+                        $scope.alertDialog('sucesso', 'Sucesso', 'Funcionário inscrito com sucesso!');
                         limparAutocompleteFuncionario();
                         getAlunos();
                     }
@@ -217,8 +227,6 @@ angular.module('myApp.curso', [])
             );
 
         }
-
-        $scope.cursosPdf = [];
 
         /**
          * Recupera lista de cursos e seus alunos.
@@ -271,7 +279,7 @@ angular.module('myApp.curso', [])
                 if(curso.alunos.length == 0){
                     docDefinition.content.push(
                         {
-                            text: 'Nenhum aluno relacionado.'
+                            text: 'Nenhum aluno inscrito.'
                         }
                     );
                 }
@@ -293,14 +301,112 @@ angular.module('myApp.curso', [])
 
         }
 
+        /**
+         * Confirma exclusão do funcionário.
+         * @param ev
+         */
+        $scope.confirmarExcluir = function(ev, id) {
+
+            var confirm = $mdDialog.confirm()
+                .title('Confirma exclusão?')
+                .textContent('O curso pode ter funcionários inscritos!')
+                .ariaLabel('Confirma exclusão?')
+                .targetEvent(ev)
+                .ok('Continuar')
+                .cancel('Cancelar');
+
+            $mdDialog.show(confirm).then(function () {
+                $scope.excluir(id);
+            },function(){});
+
+        }
+
+        /**
+         * Processa exclusão do funcionário.
+         * @param id
+         */
+        $scope.excluir = function (id) {
+
+            $http.delete($scope.apiHost + 'curso/' + id).then(
+                function (response) {
+                    if (response.data.erro != undefined) {
+                        $scope.alertDialog('erro', 'Erro', response.data.erro);
+                    }
+                    else {
+                        $scope.alertDialog('sucesso', 'Sucesso', 'Curso excluído!');
+                        $scope.listar();
+                    }
+                },
+                function (response) {
+                    $scope.alertDialog('erro', 'Erro', 'Erro no servidor!');
+                }
+            );
+
+        }
+
+        /**
+         * Confirma exclusão do funcionário.
+         * @param ev
+         */
+        $scope.confirmarRemover = function(ev, id) {
+
+            var confirm = $mdDialog.confirm()
+                .title('Confirma remoção?')
+                .textContent('O aluno será removido do curso!')
+                .ariaLabel('Confirma remoção?')
+                .targetEvent(ev)
+                .ok('Continuar')
+                .cancel('Cancelar');
+
+            $mdDialog.show(confirm).then(function () {
+                $scope.remover(id);
+            },function(){});
+
+        }
+
+        /**
+         * Processa exclusão do funcionário.
+         * @param id
+         */
+        $scope.remover = function (id) {
+
+            $http.delete($scope.apiHost + 'curso/remover-aluno', {curso_id: $scope.cursoSelecionado.id, funcionario_id: id}).then(
+                function (response) {
+                    if (response.data.erro != undefined) {
+                        $scope.alertDialog('erro', 'Erro', response.data.erro);
+                    }
+                    else {
+                        $scope.alertDialog('sucesso', 'Sucesso', 'Aluno removido!');
+                        getAlunos();
+                    }
+                },
+                function (response) {
+                    $scope.alertDialog('erro', 'Erro', 'Erro no servidor!');
+                }
+            );
+
+        }
+
     })
 
-    .controller('cursoFormCtrl', function ($scope, $http, $stateParams) {
+    .controller('cursoFormCtrl', function ($scope, $http, $state, $stateParams) {
 
-        $scope.curso = {id: '', titulo: '', descricao: '', carga_horaria: '', valor: ''};
+        $scope.acao = $stateParams.id != undefined ? 'Editar' : 'Cadastrar';
 
-        $scope.acao = $stateParams.id != undefined ? 'Visualizar/Editar' : 'Cadastrar';
+        /**
+         * Inicializa model de curso.
+         * @returns {{carga_horaria: string, valor: string, titulo: string, id: string, descricao: string}}
+         */
+        $scope.initCurso = function(){
+            return {id: '', titulo: '', descricao: '', carga_horaria: '', valor: ''};
+        }
 
+        $scope.curso = $scope.initCurso();
+
+        /**
+         * Recupera um curso.
+         * @param id
+         */
         $scope.getCurso = function(id){
 
             $http.get($scope.apiHost + 'curso/' + id, $scope.query).then(
@@ -333,7 +439,13 @@ angular.module('myApp.curso', [])
 
             //console.log($scope.curso, $scope.cursoForm);
 
-            $scope.salvarDados('curso/salvar', $scope.cursoForm.$valid, $scope.curso);
+            $scope.salvarDados('curso/salvar', $scope.cursoForm.$valid, $scope.curso,
+                function(){
+                    if($scope.acao == 'Cadastrar') {
+                        $state.reload();
+                    }
+                }
+            );
 
         }
 

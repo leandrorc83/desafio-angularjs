@@ -28,6 +28,14 @@ class Funcionario extends Model// implements AuthenticatableContract, Authorizab
     ];
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function cursos()
+    {
+        return $this->belongsToMany('App\Models\Curso', 'curso_funcionario', 'funcionario_id', 'curso_id');
+    }
+
+    /**
      * @param $dados
      * @return false|string
      * @throws \Exception
@@ -85,6 +93,47 @@ class Funcionario extends Model// implements AuthenticatableContract, Authorizab
         if($funcionario2){
             throw new \ErrorException('Já existe outro funcionário com o nome informado!');
         }
+
+    }
+
+    /**
+     * Processa exclusão do funcionário.
+     * @param $id
+     * @return false|string
+     * @throws \Exception
+     */
+    public function excluir($id)
+    {
+
+        $retorno = new \stdClass();
+
+        try {
+
+            \DB::beginTransaction();
+
+            //return response()->json($id);
+            $funcionario = Funcionario::find($id);
+
+            if ($funcionario) {
+                $funcionario->cursos()->detach();
+                $funcionario->delete();
+            }
+
+            \DB::commit();
+
+        }
+        catch(\ErrorException $e)
+        {
+            \DB::rollback();
+            $retorno->erro = $e->getMessage();
+        }
+        catch(\Exception $e)
+        {
+            \DB::rollback();
+            throw $e;
+        }
+
+        return json_encode($retorno);
 
     }
 

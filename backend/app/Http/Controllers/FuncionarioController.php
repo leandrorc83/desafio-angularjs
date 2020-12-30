@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Funcionario;
+use App\Models\CursoFuncionario;
 use Illuminate\Http\Request;
 use DB;
 
@@ -46,18 +47,14 @@ class FuncionarioController extends Controller
     }
 
     /**
-     * Deleta um funcionário
-     * @param $id
+     * Exclui um funcionário
+     * @param $request
      */
-    public function delete($id)
+    public function excluir(Request $request)
     {
 
-        //return response()->json($id);
-        $funcionario = Funcionario::find($id);
-
-        if($funcionario){
-            $funcionario->delete();
-        }
+        $funcionario = new Funcionario();
+        return $funcionario->excluir($request->id);
 
     }
 
