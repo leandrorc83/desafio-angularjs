@@ -18,7 +18,7 @@ git clone https://github.com/leandrorc83/desafio-angularjs.git
 3 - Entre na pasta desafio-angularjs
 
 4 - Execute o seguinte comando:
-sudo docker-compose up
+sudo docker-compose up (Linux e Mac) ou docker-compose up (Windows)
 
 5 - Quando finalizar o comando acima, acesse a url localhost:4300 em seu navegador
 
