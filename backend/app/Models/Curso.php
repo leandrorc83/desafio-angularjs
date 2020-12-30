@@ -124,7 +124,6 @@ class Curso extends Model
         $retorno = new \stdClass();
 
         $cursoFuncionario = CursoFuncionario::where('curso_id', $dados['curso_id'])->where('funcionario_id', $dados['funcionario_id'])->first();
-        return $cursoFuncionario;
 
         $cursoFuncionario->delete();
 
