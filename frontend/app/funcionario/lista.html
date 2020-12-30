@@ -1,6 +1,6 @@
 <h2>Lista de funcionários</h2>
 
-<a href="#!/funcionario/dados">Cadastrar funcionário</a>
+<a ui-sref="funcionario-cadastrar">Cadastrar funcionário</a>
 
 <md-table-container>
     <table md-table md-progress="true">
@@ -20,7 +20,7 @@
                 <td md-cell>{{funcionario.endereco}}</td>
                 <td md-cell>{{funcionario.dt_admissao | date:'dd/MM/yyyy'}}</td>
                 <td md-cell>
-                    <a href="#!/funcionario/dados/{{funcionario.id}}" style="color:inherit;">
+                    <a ui-sref="funcionario-editar({id: '{{funcionario.id}}'})" style="color:inherit;">
                         <span class="material-icons">edit</span>
                     </a>
                 </td>

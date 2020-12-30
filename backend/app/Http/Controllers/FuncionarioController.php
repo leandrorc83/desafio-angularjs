@@ -40,56 +40,8 @@ class FuncionarioController extends Controller
     public function salvar(Request $request)
     {
 
-        \DB::beginTransaction();
-
-        $retorno = new \stdClass();
-        try
-        {
-            //throw new \ErrorException('Campo obrigatório!');
-            if($request->id) {
-                $funcionario = Funcionario::find($request->id);
-
-                //Se mudou nome, checa se existe outro com mesmo nome.
-                if($funcionario->nome != $request->nome){
-                    $this->testaFuncionario($request->nome);
-                }
-
-                $funcionario->update($request->all());
-            }
-            else{
-                $this->testaFuncionario($request->nome);
-                $funcionario = Funcionario::create($request->all());
-            }
-
-            $funcionario->save();
-            \DB::commit();
-        }
-        catch(\ErrorException $e)
-        {
-            \DB::rollback();
-            $retorno->erro = $e->getMessage();
-        }
-        catch(\Exception $e)
-        {
-            \DB::rollback();
-            throw $e;
-        }
-
-        return json_encode($retorno);
-
-    }
-
-    /**
-     * Verifica se já existe funcionário com $nome e, em caso afirmativo, dispara exceção.
-     * @param $nome
-     * @throws \ErrorException
-     */
-    public function testaFuncionario($nome){
-
-        $funcionario2 = Funcionario::where('nome', $nome)->first();
-        if($funcionario2){
-            throw new \ErrorException('Já existe outro funcionário com o nome informado!');
-        }
+        $funcionario = new Funcionario();
+        return $funcionario->salvar($request->all());
 
     }
 
@@ -99,12 +51,14 @@ class FuncionarioController extends Controller
      */
     public function delete($id)
     {
+
         //return response()->json($id);
         $funcionario = Funcionario::find($id);
 
         if($funcionario){
             $funcionario->delete();
         }
+
     }
 
     /**
@@ -112,9 +66,10 @@ class FuncionarioController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function pesquisar(Request $request){
+    public function pesquisar(Request $request)
+    {
 
-        return Funcionario::where('nome', 'like', "%{$request->nome}%")->get();
+        return Funcionario::where('nome', 'like', "%{$request->nome}%")->orderBy('nome')->get();
 
         /*
         $query = Db::table('funcionario as f')

@@ -2,19 +2,33 @@
 
 angular.module('myApp.funcionario', [])
 
-    .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/funcionario', {
+    .config(function ($stateProvider) {
 
-            templateUrl: 'funcionario/lista.html',
-            controller: 'funcionarioListaCtrl'
+        $stateProvider
 
-        }).when('/funcionario/dados/:id?', {
+            .state ('funcionario',{
+                url: "/funcionario",
+                views: {
+                    '' :{
+                        templateUrl: "/funcionario/lista.html",
+                        controller: 'funcionarioListaCtrl'
+                    }
+                }
+            })
 
-            templateUrl: 'funcionario/dados.html',
-            controller: 'funcionarioFormCtrl'
+            .state ('funcionario-cadastrar',{
+                url: "/funcionario/cadastrar",
+                templateUrl: "/funcionario/dados.html",
+                controller: 'funcionarioFormCtrl'
+            })
 
-        });
-    }])
+            .state ('funcionario-editar',{
+                url: "/funcionario/editar/:id",
+                templateUrl: "/funcionario/dados.html",
+                controller: 'funcionarioFormCtrl'
+            });
+
+    })
 
     .controller('funcionarioListaCtrl', function ($scope, $http) {
 
@@ -52,11 +66,11 @@ angular.module('myApp.funcionario', [])
 
     })
 
-    .controller('funcionarioFormCtrl', function ($scope, $http, $routeParams) {
+    .controller('funcionarioFormCtrl', function ($scope, $http, $stateParams) {
 
         $scope.funcionario = {id: '', nome: '', telefone: '', endereco: '', dt_admissao: ''};
 
-        $scope.acao = $routeParams.id != undefined ? 'Visualizar/Editar' : 'Cadastrar';
+        $scope.acao = $stateParams.id != undefined ? 'Visualizar/Editar' : 'Cadastrar';
 
         $scope.getFuncionario = function(id){
 
@@ -75,8 +89,8 @@ angular.module('myApp.funcionario', [])
 
         }
 
-        if($routeParams.id != undefined){
-            $scope.getFuncionario($routeParams.id);
+        if($stateParams.id != undefined){
+            $scope.getFuncionario($stateParams.id);
         }
 
         /**

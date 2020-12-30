@@ -21,9 +21,96 @@ class Curso extends Model
         'valor',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function alunos()
     {
         return $this->belongsToMany('App\Models\Funcionario', 'curso_funcionario', 'curso_id', 'funcionario_id');
+    }
+
+    /**
+     * @param $dados
+     * @return false|string
+     * @throws \Exception
+     */
+    public function salvar($dados)
+    {
+
+        \DB::beginTransaction();
+
+        $retorno = new \stdClass();
+        try
+        {
+            if($dados['id']) {
+                $curso = Curso::find($dados['id']);
+
+                //Se mudou título, checa se existe outro curso com o título informado.
+                if($curso->titulo != $dados['titulo']){
+                    $this->testaCurso($dados['titulo']);
+                }
+
+                $curso->update($dados);
+            }
+            else{
+                $this->testaCurso($dados['titulo']);
+                $curso = Curso::create($dados);
+            }
+
+            $curso->save();
+            \DB::commit();
+        }
+        catch(\ErrorException $e)
+        {
+            \DB::rollback();
+            $retorno->erro = $e->getMessage();
+        }
+        catch(\Exception $e)
+        {
+            \DB::rollback();
+            throw $e;
+        }
+
+        return json_encode($retorno);
+
+    }
+
+    /**
+     * Verifica se já existe funcionário com $nome e, em caso afirmativo, dispara exceção.
+     * @param $nome
+     * @throws \ErrorException
+     */
+    public function testaCurso($titulo)
+    {
+
+        $curso2 = Curso::where('titulo', $titulo)->first();
+        if($curso2){
+            throw new \ErrorException('Já existe outro curso com o título informado!');
+        }
+
+    }
+
+    /**
+     * Relaciona aluno a um curso.
+     * @param $dados
+     * @return false|string
+     */
+    public function relacionarAluno($dados)
+    {
+
+        $retorno = new \stdClass();
+
+        $cursoFuncionario = CursoFuncionario::firstOrNew($dados);
+
+        if(!$cursoFuncionario->id){
+            $cursoFuncionario->save();
+        }
+        else{
+            $retorno->erro = 'Funcionário já relacionado a este curso.';
+        }
+
+        return json_encode($retorno);
+
     }
 
 }

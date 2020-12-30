@@ -145,3 +145,27 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: .5rem;
   margin-top: .5rem;
 }
+
+
+/**
+ Estilos para a md-dialog para mais de um objeto ao mesmo tempo.
+*/
+.md-dialog-backdrop {
+  z-index: 78;
+}
+
+.md-dialog-backdrop ~ .md-dialog-backdrop {
+  z-index: 79;
+}
+
+md-backdrop.md-dialog-backdrop {
+  z-index: 78;
+}
+
+.md-dialog-container {
+  z-index: 78;
+}
+
+.md-dialog-container ~ .md-dialog-container {
+  z-index: 80;
+}

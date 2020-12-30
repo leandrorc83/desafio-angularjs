@@ -1,45 +1,43 @@
-<div ng-controller="cursoListaCtrl as ctrl">
-
 <h2>Lista de cursos</h2>
 
-<md-button href="#!/curso/dados">Cadastrar curso</md-button> |
-<md-button ng-click="ctrl.getCursosComAlunos()">Gerar pdf</md-button>
+<md-button ui-sref="curso-cadastrar">Cadastrar curso</md-button> |
+<md-button ng-click="getCursosComAlunos()">Gerar pdf</md-button>
 
 <md-table-container>
-    <table md-table md-progress="true">
-        <thead md-head md-order="query.order" md-on-reorder="listar" md-progress="promise">
-        <tr md-row>
-            <th width="20%" md-column md-order-by="curso.nome"><span>Título</span></th>
-            <th width="40%" md-column>Descrição</th>
-            <th width="15%" md-column md-numeric>Carga Horária</th>
-            <th width="10%" md-column md-numeric>Valor</th>
-            <th width="15%" md-column>Ações</th>
-        </tr>
-        </thead>
-        <tbody md-body>
-        <tr md-row ng-repeat="curso in cursos">
-            <td md-cell>{{curso.titulo}}</td>
-            <td md-cell>{{curso.descricao}}</td>
-            <td md-cell>{{curso.carga_horaria}}</td>
-            <td md-cell style="white-space: nowrap;">{{curso.valor | currency}}</td>
-            <td md-cell style="white-space: nowrap;">
-                <a href="#!/curso/dados/{{curso.id}}" style="color:inherit;margin-right:5px;">
-                    <md-tooltip md-direction="top">
-                        Ver/editar
-                    </md-tooltip>
-                    <span class="material-icons">edit</span>
-                </a>
+	<table md-table md-progress="true">
+		<thead md-head md-order="query.order" md-on-reorder="listar" md-progress="promise">
+		<tr md-row>
+			<th width="20%" md-column md-order-by="curso.nome"><span>Título</span></th>
+			<th width="40%" md-column>Descrição</th>
+			<th width="15%" md-column md-numeric>Carga Horária</th>
+			<th width="10%" md-column md-numeric>Valor</th>
+			<th width="15%" md-column>Ações</th>
+		</tr>
+		</thead>
+		<tbody md-body>
+		<tr md-row ng-repeat="curso in cursos">
+			<td md-cell>{{curso.titulo}}</td>
+			<td md-cell>{{curso.descricao}}</td>
+			<td md-cell>{{curso.carga_horaria}}</td>
+			<td md-cell style="white-space: nowrap;">{{curso.valor | currency}}</td>
+			<td md-cell style="white-space: nowrap;">
+				<a ui-sref="curso-editar({id: '{{curso.id}}'})" style="color:inherit;">
+					<md-tooltip md-direction="top">
+						Ver/editar
+					</md-tooltip>
+					<span class="material-icons">edit</span>
+				</a>
 
-                <span ng-click="abrirRelacaoAlunos($event, curso)" style="color:inherit;cursor:pointer;">
+				<span ng-click="abrirRelacaoAlunos($event, curso)" style="color:inherit;cursor:pointer;">
                     <md-tooltip md-direction="top">
                         Ver/gerenciar alunos
                     </md-tooltip>
                     <span class="material-icons">people</span>
                 </span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+			</td>
+		</tr>
+		</tbody>
+	</table>
 </md-table-container>
 
 <md-table-pagination md-limit="query.limit" md-limit-options="[5, 10, 15]" md-page="query.page"
@@ -47,65 +45,85 @@
 
 
 <div style="visibility: hidden">
-    <div class="md-dialog-container" id="myDialog">
-        <md-dialog layout-padding flex="80">
-            <h2>Relação de alunos</h2>
-
-            <span>
-                <b>Curso:</b> {{cursoSelecionado.titulo}}
-            </span>
-
-
-                <label id="funcionario">Funcionário</label>
-
-                <md-autocomplete
-                        md-no-cache="true"
-                        md-selected-item="ctrl.selectedItem"
-                        md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
-                        md-search-text="ctrl.searchText"
-                        md-selected-item-change="ctrl.selectedItemChange(item)"
-                        md-items="item in ctrl.pesquisarFuncionario(ctrl.searchText)"
-                        md-item-text="item.display"
-                        md-min-length="0"
-                        placeholder="Digite o nome"
-                        input-aria-labelledby="funcionario"
-                        md-delay="300"
-                        >
-                    <md-item-template>
-                        <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">
-                            {{item.display}}
+	<div class="md-dialog-container" id="alunosCurso" layout-margin>
+		<md-dialog flex="80" aria-label="Relação de alunos">
+			<md-toolbar>
+				<div class="md-toolbar-tools">
+					<h2>Relação de alunos</h2>
+					<span flex></span>
+					<md-button class="md-icon-button" ng-click="fecharRelacaoAlunos()">
+						<span class="material-icons" style="font-weight:bold;">
+                            close
                         </span>
-                    </md-item-template>
-                    <md-not-found>
-                        Nenhum funcionário com o nome "{{ctrl.searchText}}" foi encontrado.
-                    </md-not-found>
-                </md-autocomplete>
+					</md-button>
+				</div>
+			</md-toolbar>
 
-                <div>
-                    <md-button class="md-raised" ng-click="ctrl.relacionarFuncionarioCurso()">Relacionar</md-button>
-                </div>
+			<md-dialog-content>
 
-                <div ng-messages="funcionarioForm.endereco.$error" role="alert">
-                    <div ng-message="required">Campo obrigatório.</div>
-                </div>
+				<div class="md-dialog-content">
 
-            <md-content>
-                <p ng-show="alunosCursoSelecionado.length == 0 && !carregandoAlunos">
-                    Nenhum aluno relacionado.
-                </p>
-                <p ng-show="carregandoAlunos">
-                    Carregando alunos...
-                </p>
+					<p>
+                        <b>Curso:</b> {{cursoSelecionado.titulo}}
+                    </p>
 
-                <ul>
-                    <li ng-repeat="aluno in alunosCursoSelecionado">
-                        {{aluno.nome}}
-                    </li>
-                </ul>
-            </md-content>
+					<form>
 
-        </md-dialog>
-    </div>
-</div>
+						<md-autocomplete
+								md-no-cache="true"
+								md-selected-item="selectedItem"
+								md-search-text-change="searchTextChange(searchText)"
+								md-search-text="searchText"
+								md-selected-item-change="selectedItemChange(item)"
+								md-items="item in pesquisarFuncionario(searchText)"
+								md-item-text="item.display"
+								md-min-length="0"
+								placeholder="Funcionário (digite o nome e selecione da lista)"
+								input-aria-labelledby="funcionario"
+								md-delay="300"
+						>
 
+							<md-item-template>
+                                <span md-highlight-text="searchText" md-highlight-flags="^i">
+                                    {{item.display}}
+                                </span>
+							</md-item-template>
+							<md-not-found>
+								Nenhum funcionário com o nome "{{searchText}}" foi encontrado.
+							</md-not-found>
+
+						</md-autocomplete>
+
+						<div>
+							<md-button class="md-raised" ng-click="relacionarFuncionarioCurso()" style="margin-left:0;">
+								Relacionar
+							</md-button>
+						</div>
+
+					</form>
+
+					<p>
+						<b>Alunos:</b>
+					</p>
+
+					<p ng-show="carregandoAlunos">
+						Carregando alunos...
+					</p>
+
+                    <p ng-show="alunosCursoSelecionado.length == 0 && !carregandoAlunos">
+                        Nenhum aluno relacionado.
+                    </p>
+
+                    <ul ng-show="alunosCursoSelecionado.length > 0 && !carregandoAlunos" style="list-style-type:none;padding-left:0;">
+                        <li ng-repeat="aluno in alunosCursoSelecionado">
+                            {{aluno.nome}}
+                        </li>
+                    </ul>
+
+				</div>
+
+            <md-dialog-content>
+
+		</md-dialog>
+	</div>
 </div>

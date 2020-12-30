@@ -41,56 +41,8 @@ class CursoController extends Controller
     public function salvar(Request $request)
     {
 
-        \DB::beginTransaction();
-
-        $retorno = new \stdClass();
-        try
-        {
-            //throw new \ErrorException('Campo obrigatório!');
-            if($request->id) {
-                $curso = Curso::find($request->id);
-
-                //Se mudou nome, checa se existe outro com mesmo nome.
-                if($curso->titulo != $request->titulo){
-                    $this->testaCurso($request->titulo);
-                }
-
-                $curso->update($request->all());
-            }
-            else{
-                $this->testaCurso($request->titulo);
-                $curso = Curso::create($request->all());
-            }
-
-            $curso->save();
-            \DB::commit();
-        }
-        catch(\ErrorException $e)
-        {
-            \DB::rollback();
-            $retorno->erro = $e->getMessage();
-        }
-        catch(\Exception $e)
-        {
-            \DB::rollback();
-            throw $e;
-        }
-
-        return json_encode($retorno);
-
-    }
-
-    /**
-     * Verifica se já existe funcionário com $nome e, em caso afirmativo, dispara exceção.
-     * @param $nome
-     * @throws \ErrorException
-     */
-    public function testaCurso($titulo){
-
-        $curso2 = Curso::where('titulo', $titulo)->first();
-        if($curso2){
-            throw new \ErrorException('Já existe outro curso com o título informado!');
-        }
+        $curso = new Curso();
+        return $curso->salvar($request->all());
 
     }
 
@@ -99,12 +51,14 @@ class CursoController extends Controller
      */
     public function delete($id)
     {
+
         //return response()->json($id);
         $curso = Curso::find($id);
 
         if($curso){
             $curso->delete();
         }
+
     }
 
     /**
@@ -113,8 +67,10 @@ class CursoController extends Controller
     */
     public function getAlunos($id)
     {
+
         sleep(3);
-        return Curso::find($id)->alunos()->get();
+        return Curso::find($id)->alunos()->orderBy('nome')->get();
+
     }
 
     /**
@@ -124,26 +80,19 @@ class CursoController extends Controller
     public function relacionarAluno(Request $request)
     {
 
-        $retorno = new \stdClass();
-
-        $cursoFuncionario = CursoFuncionario::firstOrNew($request->all());
-
-        if(!$cursoFuncionario->id){
-            $cursoFuncionario->save();
-        }
-        else{
-            $retorno->erro = 'Funcionário já relacionado a este curso.';
-        }
-
-        return json_encode($retorno);
+        $curso = new Curso();
+        return $curso->relacionarAluno($request->all());
 
     }
 
+    /**
+     * Retorna lista de cursos e seus alunos.
+     * @return Curso[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
     public function getCursosComAlunos(){
 
         return Curso::with('alunos')->get();
 
     }
-
 
 }

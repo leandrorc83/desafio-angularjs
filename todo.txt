@@ -1,0 +1,26 @@
+1 - Usar ui-router
+2 - No relacionamento de alunos a um curso, mostrar no autocomplete apenas os que ainda não estão relacionados ao curso
+2 - Tratamento no backend: antes de relacionar aluno a um curso, verificar se aluno já está relacionado.
+2 - Desrrelacionar aluno de curso
+2 - Verificar tamanhos dos campos varchar
+2 - Criar ícone de fechar para as modais
+2 - Abrir modal sem fechar as outras (acontece quando abre a modal de erro no servidor quando a modal de relação de alunos tá aberta, por ex)
+2 - Criar rota funcionario/cadastrar, mas usando o template dados.html
+2 - Tooltip no ícone de ver funcionário
+2 - Mudar ícone de relacionar alunos
+2 - Criar breadcrumb acima do título das views
+3 - Fazer ordenação e paginação do data grid funcionarem (ou usar outro data grid)
+4 - Alterar texto da barra de paginação do data grid para português
+5 - Mudar Cadastrar funcionário e Cadastrar curso para botões
+6 - Fazer ícone do menu funcionar também para abrir e fechar menu em resoluções grandes
+7 - Colocar x para fechar menu aberto?
+8 - Excluir funcionário e curso
+9 - Melhorar visua da topbar
+10 - Achar um template pronto pra usar, se possível
+11 - Melhorar visual do menu
+12 - Refatorar código para usar variáveis e funções da forma ideal (self ou scope)
+13 - Melhorar visual geral dos botões, ícones e campos
+14 - Melhorar apresentação do campo "Valor" (moeda, mostrar zero à direita, etc.)
+15 - Colocar logo na topbar (mudar ícone de menu pra direita)?
+16 - Nos formulários, colocar dois campos por linha nas resoluções maiores?
+17 - Após cadastrar curso e funcionário, a modal perguntar se quer cadastrar novo.

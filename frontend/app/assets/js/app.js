@@ -2,19 +2,25 @@
 
 // Declare app level module which depends on views, and core components
 angular.module('myApp', [
-    'ngRoute',
+    'ui.router',
     'ngMessages',
     'ngMaterial',
     'md.data.table',
     'myApp.funcionario',
     'myApp.curso',
-]).config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
+]).config(function ($stateProvider, $urlRouterProvider) {
 
-    $locationProvider.hashPrefix('!');
+    //$locationProvider.hashPrefix('!');
 
-    $routeProvider.otherwise({redirectTo: '/funcionario'});
+    //$routeProvider.otherwise({redirectTo: '/funcionario'});
 
-}]).controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $mdDialog, $http) {
+    $stateProvider
+        .state ('home',{
+            url:'/home',
+            templateUrl:'home.html'
+        });
+
+}).controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $mdDialog, $http) {
 
     $scope.apiHost = 'http://localhost:8082/api/';
 
@@ -73,6 +79,7 @@ angular.module('myApp', [
                 .textContent(conteudo)
                 //.ariaLabel('Alert Dialog Demo')
                 .ok('OK')
+                .multiple(true)
                 //.targetEvent(ev)
         );
 

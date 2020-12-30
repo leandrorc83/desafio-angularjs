@@ -1,5 +1,9 @@
 <h2>{{acao}} curso</h2>
 
+<p>
+    * = campo obrigatório
+</p>
+
 <form name="cursoForm" novalidate ng-submit="salvar()">
 
     <input name="id" type="hidden" ng-model="curso.id" />
@@ -15,10 +19,11 @@
 
     <md-input-container class="md-block">
         <label>Descrição</label>
-        <input name="descricao" ng-model="curso.descricao" required />
+        <input name="descricao" md-maxlength="200" ng-model="curso.descricao" required />
 
         <div ng-messages="cursoForm.descricao.$error" role="alert">
             <div ng-message="required">Campo obrigatório.</div>
+            <div ng-message="md-maxlength">A descrição deve conter no máximo 200 caracteres.</div>
         </div>
     </md-input-container>
 

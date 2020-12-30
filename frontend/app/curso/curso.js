@@ -2,19 +2,32 @@
 
 angular.module('myApp.curso', [])
 
-    .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/curso', {
+    .config(function ($stateProvider) {
 
-            templateUrl: 'curso/lista.html',
-            controller: 'cursoListaCtrl'
+        $stateProvider
+            .state ('curso',{
+                url: "/curso",
+                views: {
+                    '' :{
+                        templateUrl: "/curso/lista.html",
+                        controller: 'cursoListaCtrl'
+                    }
+                }
+            })
 
-        }).when('/curso/dados/:id?', {
+            .state ('curso-cadastrar',{
+                url: "/curso/cadastrar",
+                templateUrl: "/curso/dados.html",
+                controller: 'cursoFormCtrl'
+            })
 
-            templateUrl: 'curso/dados.html',
-            controller: 'cursoFormCtrl'
+            .state ('curso-editar',{
+                url: "/curso/editar/:id",
+                templateUrl: "/curso/dados.html",
+                controller: 'cursoFormCtrl'
+            });
 
-        });
-    }])
+    })
 
     .controller('cursoListaCtrl', function ($scope, $http, $mdDialog) {
 
@@ -69,31 +82,50 @@ angular.module('myApp.curso', [])
 
             $scope.alunosCursoSelecionado = [];
 
-            self.funcionarioIdRelacionar = null;
+            $scope.cursoIdRelacionar = null;
 
             $mdDialog.show({
-                contentElement: '#myDialog',
+                contentElement: '#alunosCurso',
                 // Appending dialog to document.body to cover sidenav in docs app
                 // Modal dialogs should fully cover application to prevent interaction outside of dialog
                 parent: angular.element(document.body),
                 targetEvent: ev,
-                clickOutsideToClose: true
+                clickOutsideToClose: true,
+                ok: "Fechar",
+                multiple: true,
+                onRemoving: function (event, removePromise) {
+                    limparAutocompleteFuncionario();
+                }
             });
 
             getAlunos();
 
         }
 
-        var self = this;
+        /**
+         * Fecha modal com a relação de alunos do curso selecionado.
+         */
+        $scope.fecharRelacaoAlunos = function () {
+
+            $mdDialog.cancel();
+
+        }
 
         // list of `state` value/display objects
-        self.funcionariosPorNome = [];
-        self.pesquisarFuncionario = pesquisarFuncionario;
-        self.selectedItemChange = selectedItemChange;
-        self.searchTextChange = searchTextChange;
-        self.funcionarioIdRelacionar = null;
+        $scope.cursosPorNome = [];
+        $scope.pesquisarFuncionario = pesquisarFuncionario;
+        $scope.selectedItemChange = selectedItemChange;
+        $scope.cursoIdRelacionar = null;
 
+        $scope.searchText = '';
+        $scope.selectedItem = '';
+
+        /**
+         * Recupera lista de alunos do curso selecionado.
+         */
         function getAlunos(){
+
+            $scope.carregandoAlunos = true;
 
             $http.post($scope.apiHost + 'curso/get-alunos/' + $scope.cursoSelecionado.id, $scope.query).then(
                 function (response) {
@@ -111,6 +143,17 @@ angular.module('myApp.curso', [])
 
         }
 
+        /**
+         * Limpa o autocomplete de relacionar funcionário a um curso.
+         */
+        function limparAutocompleteFuncionario(){
+            $scope.searchText = '';
+            $scope.selectedItem = '';
+        }
+
+        /**
+         * Pesquisa funcionário cujo nome contenha o informado no campo "Funcionário" da janela "Relação de alunos".
+         */
         function pesquisarFuncionario (query) {
 
             if(query.length == 0){
@@ -124,16 +167,16 @@ angular.module('myApp.curso', [])
                         return;
                     }
 
-                    self.funcionariosPorNome = [];
+                    $scope.cursosPorNome = [];
 
-                    for(var funcionario of response.data){
-                        self.funcionariosPorNome.push({
-                            value: funcionario.id,
-                            display: funcionario.nome
+                    for(var curso of response.data){
+                        $scope.cursosPorNome.push({
+                            value: curso.id,
+                            display: curso.nome
                         });
                     }
 
-                    return self.funcionariosPorNome;
+                    return $scope.cursosPorNome;
                 },
                 function (response) {
                     $scope.alertDialog('erro', 'Erro', 'Erro no servidor!');
@@ -142,24 +185,28 @@ angular.module('myApp.curso', [])
 
         }
 
-        function searchTextChange(text) {
-            //$log.info('Text changed to ' + text);
-        }
-
         function selectedItemChange(item) {
-            self.funcionarioIdRelacionar = item.value;
-            //$log.info('Item changed to ' + JSON.stringify(item));
+
+            if(item != undefined) {
+                $scope.funcionarioIdRelacionar = item.value;
+            }
+
         }
 
-        self.relacionarFuncionarioCurso = function(){
+        /**
+         * Relaciona funcionário a curso.
+         */
+        $scope.relacionarFuncionarioCurso = function(){
 
-            $http.post($scope.apiHost + 'curso/relacionar-aluno', {curso_id: $scope.cursoSelecionado.id, funcionario_id: self.funcionarioIdRelacionar}).then(
+            $http.post($scope.apiHost + 'curso/relacionar-aluno', {curso_id: $scope.cursoSelecionado.id, funcionario_id: $scope.funcionarioIdRelacionar}).then(
                 function (response) {
                     if (response.data.erro != undefined) {
                         $scope.alertDialog('erro', 'Erro', response.data.erro);
                     }
                     else{
                         $scope.alertDialog('sucesso', 'Sucesso', 'Funcionário relacionado com sucesso!');
+                        limparAutocompleteFuncionario();
+                        getAlunos();
                     }
 
                 },
@@ -171,18 +218,22 @@ angular.module('myApp.curso', [])
 
         }
 
-        self.cursosPdf = [];
-        self.getCursosComAlunos = function() {
+        $scope.cursosPdf = [];
 
-            self.cursosPdf = [];
+        /**
+         * Recupera lista de cursos e seus alunos.
+         */
+        $scope.getCursosComAlunos = function() {
+
+            $scope.cursosPdf = [];
             $http.get($scope.apiHost + 'curso/get-cursos-com-alunos').then(
                 function (response) {
                     if (response.data.erro != undefined) {
                         $scope.alertDialog('erro', 'Erro', response.data.erro);
                     } else {
-                        self.cursosPdf = response.data;
-                        if(self.cursosPdf.length > 0) {
-                            self.gerarPdf();
+                        $scope.cursosPdf = response.data;
+                        if($scope.cursosPdf.length > 0) {
+                            $scope.gerarPdf();
                         }
                         else{
                             $scope.alertDialog('erro', 'Erro', 'Não existem cursos cadastrados!');
@@ -197,7 +248,10 @@ angular.module('myApp.curso', [])
 
         }
 
-        self.gerarPdf = function(){
+        /**
+         * Gera pdf com base na lista de cursos e seus alunos.
+         */
+        $scope.gerarPdf = function(){
 
             var docDefinition = {
                 content: [
@@ -205,7 +259,7 @@ angular.module('myApp.curso', [])
                 ]
             };
 
-            for(var curso of self.cursosPdf){
+            for(var curso of $scope.cursosPdf){
 
                 docDefinition.content.push(
                     {
@@ -241,11 +295,11 @@ angular.module('myApp.curso', [])
 
     })
 
-    .controller('cursoFormCtrl', function ($scope, $http, $routeParams) {
+    .controller('cursoFormCtrl', function ($scope, $http, $stateParams) {
 
         $scope.curso = {id: '', titulo: '', descricao: '', carga_horaria: '', valor: ''};
 
-        $scope.acao = $routeParams.id != undefined ? 'Visualizar/Editar' : 'Cadastrar';
+        $scope.acao = $stateParams.id != undefined ? 'Visualizar/Editar' : 'Cadastrar';
 
         $scope.getCurso = function(id){
 
@@ -265,8 +319,10 @@ angular.module('myApp.curso', [])
 
         }
 
-        if($routeParams.id != undefined){
-            $scope.getCurso($routeParams.id);
+        if($stateParams.id != undefined){
+
+            $scope.getCurso($stateParams.id);
+
         }
 
         /**

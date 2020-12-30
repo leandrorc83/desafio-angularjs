@@ -27,4 +27,65 @@ class Funcionario extends Model// implements AuthenticatableContract, Authorizab
         'dt_admissao'
     ];
 
+    /**
+     * @param $dados
+     * @return false|string
+     * @throws \Exception
+     */
+    public function salvar($dados){
+
+        \DB::beginTransaction();
+
+        $retorno = new \stdClass();
+        try
+        {
+            //throw new \ErrorException('Campo obrigatório!');
+            if($dados['id']) {
+                $funcionario = Funcionario::find($dados['id']);
+
+                //Se mudou nome, checa se existe outro funcionário com o nome informado.
+                if($funcionario->nome != $dados['nome']){
+                    $this->testaFuncionario($dados['nome']);
+                }
+
+                $funcionario->update($dados);
+            }
+            else{
+                $this->testaFuncionario($dados['nome']);
+                $funcionario = Funcionario::create($dados);
+            }
+
+            $funcionario->save();
+            \DB::commit();
+        }
+        catch(\ErrorException $e)
+        {
+            \DB::rollback();
+            $retorno->erro = $e->getMessage();
+        }
+        catch(\Exception $e)
+        {
+            \DB::rollback();
+            throw $e;
+        }
+
+        return json_encode($retorno);
+
+    }
+
+    /**
+     * Verifica se já existe funcionário com $nome e, em caso afirmativo, dispara exceção.
+     * @param $nome
+     * @throws \ErrorException
+     */
+    public function testaFuncionario($nome)
+    {
+
+        $funcionario2 = Funcionario::where('nome', $nome)->first();
+        if($funcionario2){
+            throw new \ErrorException('Já existe outro funcionário com o nome informado!');
+        }
+
+    }
+
 }
