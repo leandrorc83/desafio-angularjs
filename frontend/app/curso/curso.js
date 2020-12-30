@@ -356,7 +356,8 @@ angular.module('myApp.curso', [])
                 .ariaLabel('Confirma remoção?')
                 .targetEvent(ev)
                 .ok('Continuar')
-                .cancel('Cancelar');
+                .cancel('Cancelar')
+                .multiple(true)
 
             $mdDialog.show(confirm).then(function () {
                 $scope.remover(id);

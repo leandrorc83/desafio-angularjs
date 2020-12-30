@@ -127,7 +127,7 @@
                         <tr ng-repeat="aluno in alunosCursoSelecionado">
 	                        <td>{{aluno.nome}}</td>
 	                        <td>
-		                        <a ng-click="confirmarRemover($event, funcionario.id)" class="pointer" style="color:inherit;">
+		                        <a ng-click="confirmarRemover($event, aluno.id)" class="pointer" style="color:inherit;">
 			                        <md-tooltip md-direction="top">
 				                        Remover do curso
 			                        </md-tooltip>
