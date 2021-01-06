@@ -24,4 +24,5 @@ $router->post('/api/curso/salvar', 'CursoController@salvar');
 $router->delete('/api/curso/{id}', 'CursoController@excluir');
 $router->post('/api/curso/get-alunos/{id}', 'CursoController@getAlunos');
 $router->post('/api/curso/relacionar-aluno', 'CursoController@relacionarAluno');
-$router->delete('/api/curso/remover-aluno/{id}', 'CursoController@removerAluno');
+$router->post('/api/curso/remover-aluno', 'CursoController@removerAluno');
+

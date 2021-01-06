@@ -371,7 +371,7 @@ angular.module('myApp.curso', [])
          */
         $scope.remover = function (id) {
 
-            $http.delete($scope.apiHost + 'curso/remover-aluno', {curso_id: $scope.cursoSelecionado.id, funcionario_id: id}).then(
+            $http.post($scope.apiHost + 'curso/remover-aluno', {curso_id: $scope.cursoSelecionado.id, funcionario_id: id}).then(
                 function (response) {
                     if (response.data.erro != undefined) {
                         $scope.alertDialog('erro', 'Erro', response.data.erro);
