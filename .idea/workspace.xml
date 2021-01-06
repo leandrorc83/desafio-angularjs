@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="48439cce-fcf0-4185-9b32-6aae79c189e1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/desafio-angularjs.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/desafio-angularjs.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/storage/database.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/backend/storage/database.sqlite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/assets/img/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/assets/img/favicon.ico" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution>
+      <executable />
+    </execution>
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="database" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="database" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="database" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="main: schema" type="981a47c2:SqliteImplModel$Schema" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1mhke2H4A4R4NvvBlyOvRugNHTq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="48439cce-fcf0-4185-9b32-6aae79c189e1" name="Default Changelist" comment="" />
+      <created>1609953302211</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1609953302211</updated>
+      <workItem from="1609953307991" duration="2604000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="555" y="187" width="800" height="679" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1609948753626">
+      <screen x="0" y="0" width="1920" height="1053" />
+    </state>
+    <state x="555" y="187" width="800" height="679" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1053/1920.312.1360.768@0.0.1920.1053" timestamp="1609948753626" />
+    <state x="843" y="410" width="223" height="232" key="com.intellij.database.actions.ToolActions$ScriptingActionBase$MyDatabaseScriptDialog" timestamp="1609967577014">
+      <screen x="0" y="0" width="1920" height="1053" />
+    </state>
+    <state x="843" y="410" width="223" height="232" key="com.intellij.database.actions.ToolActions$ScriptingActionBase$MyDatabaseScriptDialog/0.0.1920.1053/1920.312.1360.768@0.0.1920.1053" timestamp="1609967577014" />
+    <state x="543" y="183" width="824" height="686" key="com.intellij.database.dbimport.ImportDialog" timestamp="1609948827216">
+      <screen x="0" y="0" width="1920" height="1053" />
+    </state>
+    <state x="543" y="183" width="824" height="686" key="com.intellij.database.dbimport.ImportDialog/0.0.1920.1053/1920.312.1360.768@0.0.1920.1053" timestamp="1609948827216" />
+    <state x="685" y="436" width="540" height="180" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1609948708070">
+      <screen x="0" y="0" width="1920" height="1053" />
+    </state>
+    <state x="685" y="436" width="540" height="180" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.0.1920.1053/1920.312.1360.768@0.0.1920.1053" timestamp="1609948708070" />
+  </component>
+</project>
