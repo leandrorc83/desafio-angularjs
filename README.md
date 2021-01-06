@@ -9,16 +9,19 @@ Tecnologias utilizadas:
 
 Instalação:
 
+Os passos a seguir consideram o contexto de uso do prompt de comando.
+
 1 - Instale o gerenciador de containers Docker de acordo com seu sistema operacional:
 https://docs.docker.com/v17.12/install/
 
 2 - Clone este repositório em um diretório:
 git clone https://github.com/leandrorc83/desafio-angularjs.git
+(no linux ou mac, caso seu usuário não tenha permissão no diretório, é necessário usar "sudo git clone")
 
-3 - Entre na pasta desafio-angularjs
+3 - Entre na pasta desafio-angularjs.
 
 4 - Execute o seguinte comando:
-sudo docker-compose up (Linux e Mac) ou docker-compose up (Windows)
+sudo docker-compose up (Linux e Mac) ou docker-compose up (Windows).
 
 5 - Quando finalizar o comando acima, acesse a url localhost:4300 em seu navegador
 
