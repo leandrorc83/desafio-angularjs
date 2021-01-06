@@ -16,7 +16,7 @@ https://docs.docker.com/v17.12/install/
 
 2 - Clone este repositório em um diretório:
 git clone https://github.com/leandrorc83/desafio-angularjs.git
-Obs: no linux ou mac, caso seu usuário não tenha permissão no diretório, pode ser necessário usar "sudo git clone".
+(no linux ou mac, caso seu usuário não tenha permissão no diretório, pode ser necessário usar "sudo git clone")
 
 3 - Entre na pasta desafio-angularjs.
 
